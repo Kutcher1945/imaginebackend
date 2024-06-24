@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres.ufigylbpgclggezgjjcc
+      POSTGRES_PASSWORD: Cfq,thNb13@  # Replace with your Supabase DB password
+      POSTGRES_HOST_AUTH_METHOD: trust
+
+  web:
+    build: .
+    command: gunicorn imaginebackend.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      DEBUG: '1'
+      DB_NAME: postgres
+      DB_USER: postgres.ufigylbpgclggezgjjcc
+      DB_PASSWORD: Cfq,thNb13@  # Replace with your Supabase DB password
+      DB_HOST: aws-0-eu-central-1.pooler.supabase.com
+      DB_PORT: 6543
+
+volumes:
+  postgres_data:
