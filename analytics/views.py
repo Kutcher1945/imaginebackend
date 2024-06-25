@@ -1,3 +1,4 @@
+import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import Analytics
@@ -6,7 +7,7 @@ from .models import Analytics
 def update_analytics_data(request):
     if request.method == 'POST':
         try:
-            data = request.json()
+            data = json.loads(request.body)
             analytics, created = Analytics.objects.get_or_create(id=1)
             analytics.page_views += data.get('pageViews', 0)
             analytics.unique_users += data.get('uniqueUsers', 0)
